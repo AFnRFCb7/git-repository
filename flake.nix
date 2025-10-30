@@ -61,7 +61,7 @@
                                                     nativeBuildInputs =
                                                         [
                                                             (
-                                                                pkgs.writeShellApplication
+                                                                writeShellApplication
                                                                     {
                                                                         name = "execute-test" ;
                                                                         runtimeInputs = [ coreutils ( failure "b951ae86" ) ] ;
