@@ -6,7 +6,8 @@
                 lib =
                     {
                         coreutils ,
-                        git
+                        git ,
+                        writeShellApplication
                     } :
                         let
                             implementation =
