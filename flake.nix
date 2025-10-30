@@ -73,7 +73,7 @@
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         touch "$OUT"
-                                                                                        ${ if [ init targets ] != builtins.attrNames instance then ''failure name "${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
+                                                                                        ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure name "${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
                                                                                         ${ if [ "git-repository" ] != instance.targets then ''failure targets "${ builtins.toJSON instance.targets }"'' else "#" }
                                                                                         ${ if init != expected then ''failure init "${ init }"'' else "" }
                                                                                     '' ;
