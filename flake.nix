@@ -12,10 +12,10 @@
                         let
                             implementation =
                                 {
-                                    configs ,
-                                    hooks ,
-                                    remotes ,
-                                    setup
+                                    configs ? { } ,
+                                    hooks ? { } ,
+                                    remotes ? { } ,
+                                    setup ? null
                                 } :
                                     {
                                         init =
@@ -44,12 +44,12 @@
                                 {
                                     check =
                                         {
-                                            configs ? [ ] ,
+                                            configs ? { } ,
                                             expected ,
                                             failure ,
-                                            hooks ? [ ] ,
+                                            hooks ? { } ,
                                             mkDerivation ,
-                                            remotes ? [ ] ,
+                                            remotes ? { } ,
                                             resources ? null ,
                                             self ? null ,
                                             setup ? null
