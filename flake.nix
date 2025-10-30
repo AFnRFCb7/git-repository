@@ -44,7 +44,7 @@
                                 {
                                     check =
                                         {
-                                            config ? [ ] ,
+                                            configs ? [ ] ,
                                             expected ,
                                             failure ,
                                             hooks ? [ ] ,
