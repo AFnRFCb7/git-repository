@@ -21,7 +21,7 @@
                                         init =
                                             { resources , self } :
                                                 let
-                                                    init =
+                                                    application =
                                                         writeShellApplication
                                                             {
                                                                 name = "init" ;
