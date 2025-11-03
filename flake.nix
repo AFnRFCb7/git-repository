@@ -19,7 +19,7 @@
                                 } :
                                     {
                                         init =
-                                            { resources , self } :
+                                            { pkgs , resources , self } :
                                                 let
                                                     application =
                                                         writeShellApplication
@@ -49,6 +49,7 @@
                                             failure ,
                                             hooks ? { } ,
                                             mkDerivation ,
+                                            pkgs ? null ,
                                             remotes ? { } ,
                                             resources ? null ,
                                             self ? null ,
@@ -68,7 +69,7 @@
                                                                         text =
                                                                             let
                                                                                 init = instance.init { resources = resources ; self = self ; } ;
-                                                                                instance = implementation { configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
+                                                                                instance = implementation { pkgs = pkgs ; configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
