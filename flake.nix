@@ -68,8 +68,8 @@
                                                                         runtimeInputs = [ coreutils ( failure "b951ae86" ) ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { resources = resources ; self = self ; } ;
-                                                                                instance = implementation { pkgs = pkgs ; configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
+                                                                                init = instance.init { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                                instance = implementation { configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
