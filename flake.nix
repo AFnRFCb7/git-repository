@@ -19,7 +19,7 @@
                                 } :
                                     {
                                         init =
-                                            { resources , self , stores } :
+                                            { resources , self } :
                                                 let
                                                     application =
                                                         writeShellApplication
@@ -52,8 +52,7 @@
                                             remotes ? { } ,
                                             resources ? null ,
                                             self ? null ,
-                                            setup ? null ,
-                                            stores ? null
+                                            setup ? null
                                         } :
                                             mkDerivation
                                                 {
@@ -68,7 +67,7 @@
                                                                         runtimeInputs = [ coreutils ( failure "b951ae86" ) ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { resources = resources ; self = self ; stores = stores ; } ;
+                                                                                init = instance.init { resources = resources ; self = self ; } ;
                                                                                 instance = implementation { configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
                                                                                 in
                                                                                     ''
