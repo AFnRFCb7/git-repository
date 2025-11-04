@@ -5,9 +5,6 @@
             {
                 lib =
                     {
-                        coreutils ,
-                        git ,
-                        writeShellApplication
                     } :
                         let
                             implementation =
@@ -22,10 +19,10 @@
                                             { pkgs , resources , self } :
                                                 let
                                                     application =
-                                                        writeShellApplication
+                                                        pkgs.writeShellApplication
                                                             {
                                                                 name = "init" ;
-                                                                runtimeInputs = [ coreutils git ] ;
+                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                 text =
                                                                     ''
                                                                         mkdir --parents /mount/git-repository
@@ -34,7 +31,12 @@
                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                        ${ if builtins.typeOf setup == "null" then "#" else setup }
+                                                                        if [[ -t 0 ]]
+                                                                        then
+                                                                            ${ if builtins.typeOf setup == "null" then "#" else "${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                        else
+                                                                            ${ if builtins.typeOf setup == "null" then "#" else "cat | ${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                        fi
                                                                     '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
@@ -48,24 +50,23 @@
                                             expected ,
                                             failure ,
                                             hooks ? { } ,
-                                            mkDerivation ,
                                             pkgs ? null ,
                                             remotes ? { } ,
                                             resources ? null ,
                                             self ? null ,
                                             setup ? null
                                         } :
-                                            mkDerivation
+                                            pkgs.stdenv.mkDerivation
                                                 {
                                                     installPhase = ''execute-test "$out"'' ;
                                                     name = "check" ;
                                                     nativeBuildInputs =
                                                         [
                                                             (
-                                                                writeShellApplication
+                                                                pkgs.writeShellApplication
                                                                     {
                                                                         name = "execute-test" ;
-                                                                        runtimeInputs = [ coreutils ( failure "b951ae86" ) ] ;
+                                                                        runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
                                                                                 init = instance.init { pkgs = pkgs ; resources = resources ; self = self ; } ;
