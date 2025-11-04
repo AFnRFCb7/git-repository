@@ -38,7 +38,7 @@
                                                                                 mkdir --parents /mount/git-repository
                                                                                 cd /mount/git-repository
                                                                                 git init 2>&1
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
+                                                                                # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                                 if [[ -t 0 ]]
