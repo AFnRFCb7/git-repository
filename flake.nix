@@ -77,7 +77,7 @@
                                                                                         touch "$OUT"
                                                                                         ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 "We expected the git-repository names to be init targets but we observed ${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
                                                                                         ${ if [ "git-repository" ] != instance.targets then ''failure 5c205b3b "We expected the git-repository targets to be git-repository but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
-                                                                                        ${ if init != expected then ''failure ecfb2043 "We expected the git-repository init to be ${ builtins.toString expected } but we observed ${ builtint.toString init }"'' else "" }
+                                                                                        ${ if init != expected then ''failure ecfb2043 "We expected the git-repository init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "" }
                                                                                     '' ;
                                                                     }
                                                             )
