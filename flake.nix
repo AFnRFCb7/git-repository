@@ -5,6 +5,7 @@
             {
                 lib =
                     {
+                        visitor
                     } :
                         let
                             implementation =
@@ -16,7 +17,7 @@
                                 } :
                                     {
                                         init =
-                                            { pkgs , resources , self } :
+                                            { pkgs , resources , self } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -24,20 +25,29 @@
                                                                 name = "init" ;
                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                 text =
-                                                                    ''
-                                                                        mkdir --parents /mount/git-repository
-                                                                        cd /mount/git-repository
-                                                                        git init 2>&1
-                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
-                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                        if [[ -t 0 ]]
-                                                                        then
-                                                                            ${ if builtins.typeOf setup == "null" then "true" else "${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
-                                                                        else
-                                                                            ${ if builtins.typeOf setup == "null" then "true" else "cat | ${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
-                                                                        fi
-                                                                    '' ;
+                                                                    let
+                                                                        config-visit =
+                                                                            visitor
+                                                                                {
+                                                                                    lambda = path : value : ''git config ${ builtins.elemAt path 0 } ${ value primary }'' ;
+                                                                                    string = path : value : ''git config ${ builtins.elemAt path 0 } ${ value }'' ;
+                                                                                }
+                                                                                configs ;
+                                                                        in
+                                                                            ''
+                                                                                mkdir --parents /mount/git-repository
+                                                                                cd /mount/git-repository
+                                                                                git init 2>&1
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                                if [[ -t 0 ]]
+                                                                                then
+                                                                                    ${ if builtins.typeOf setup == "null" then "true" else "${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                                else
+                                                                                    ${ if builtins.typeOf setup == "null" then "true" else "cat | ${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                                fi
+                                                                            '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
                                         targets = [ "git-repository" ] ;
