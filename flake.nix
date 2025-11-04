@@ -33,9 +33,9 @@
                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                         if [[ -t 0 ]]
                                                                         then
-                                                                            ${ if builtins.typeOf setup == "null" then "#" else "${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                            ${ if builtins.typeOf setup == "null" then "true" else "${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
                                                                         else
-                                                                            ${ if builtins.typeOf setup == "null" then "#" else "cat | ${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
+                                                                            ${ if builtins.typeOf setup == "null" then "true" else "cat | ${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" }
                                                                         fi
                                                                     '' ;
                                                             } ;
