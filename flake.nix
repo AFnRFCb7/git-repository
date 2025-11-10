@@ -38,6 +38,7 @@
                                                                                 string =
                                                                                     string :
                                                                                         ''
+                                                                                            echo "$0 $# $1" >> /tmp/debug
                                                                                             if [[ -t 0 ]]
                                                                                             then
                                                                                                 ${ string } "$@"
