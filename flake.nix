@@ -38,7 +38,7 @@
                                                                                 string =
                                                                                     string :
                                                                                         ''
-                                                                                            echo "$0 $#" >> /tmp/debug
+                                                                                            echo "4e355c5e $0 $#" >> /tmp/DEBUG
                                                                                             if [[ -t 0 ]]
                                                                                             then
                                                                                                 ${ string } "$@"
@@ -56,6 +56,7 @@
                                                                                         setup ;
                                                                         in
                                                                             ''
+                                                                                echo "d0b79be4 $0 $#" >> /tmp/DEBUG
                                                                                 mkdir --parents /mount/git-repository
                                                                                 cd /mount/git-repository
                                                                                 git init 2>&1
