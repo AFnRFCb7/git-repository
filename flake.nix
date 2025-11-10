@@ -49,7 +49,7 @@
                                                                                     visitor
                                                                                         {
                                                                                             lambda = path : value : string ( value primary ) ;
-                                                                                            null = path : value : null ;
+                                                                                            null = path : value : "#" ;
                                                                                             string = path : value : string value ;
                                                                                         }
                                                                                         setup ;
