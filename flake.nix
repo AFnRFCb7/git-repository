@@ -33,6 +33,26 @@
                                                                                     string = path : value : ''git config ${ builtins.elemAt path 0 } ${ value }'' ;
                                                                                 }
                                                                                 configs ;
+                                                                        setup-visit =
+                                                                            let
+                                                                                string =
+                                                                                    string :
+                                                                                        ''
+                                                                                            if [[ -t 0 ]]
+                                                                                            then
+                                                                                                ${ string } "$@"
+                                                                                            else
+                                                                                                cat | ${ string } "$@"
+                                                                                            fi
+                                                                                        '' ;
+                                                                                in
+                                                                                    visitor
+                                                                                        {
+                                                                                            lambda = path : value : string ( value primary ) ;
+                                                                                            null = path : value : null ;
+                                                                                            string = path : value : string value ;
+                                                                                        }
+                                                                                        setup ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/git-repository
@@ -41,12 +61,7 @@
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                                if [[ -t 0 ]]
-                                                                                then
-                                                                                    ${ if builtins.typeOf setup == "null" then "true" else ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' }
-                                                                                else
-                                                                                    ${ if builtins.typeOf setup == "null" then "true" else ''cat | ${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' }
-                                                                                fi
+                                                                                ${ setup-visit }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
