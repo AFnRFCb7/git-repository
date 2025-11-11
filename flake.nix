@@ -29,8 +29,8 @@
                                                                         config-visit =
                                                                             visitor
                                                                                 {
-                                                                                    lambda = path : value : ''git config ${ builtins.elemAt path 0 } ${ value primary }'' ;
-                                                                                    string = path : value : ''git config ${ builtins.elemAt path 0 } ${ value }'' ;
+                                                                                    lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value primary }"'' ;
+                                                                                    string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
                                                                                 }
                                                                                 configs ;
                                                                         setup-visit =
