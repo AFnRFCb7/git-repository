@@ -38,7 +38,6 @@
                                                                                 string =
                                                                                     string :
                                                                                         ''
-                                                                                            echo "4e355c5e $0 $#" >> /tmp/DEBUG
                                                                                             if [[ -t 0 ]]
                                                                                             then
                                                                                                 ${ string } "$@"
@@ -56,11 +55,10 @@
                                                                                         setup ;
                                                                         in
                                                                             ''
-                                                                                echo "d0b79be4 $0 $#" >> /tmp/DEBUG
                                                                                 mkdir --parents /mount/git-repository
                                                                                 cd /mount/git-repository
                                                                                 git init 2>&1
-                                                                                cd "${ self }/git-repository"
+                                                                                ${ if builtins.typeOf self == "string" then ''cd ${ self }/git-repository'' else "#" }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
