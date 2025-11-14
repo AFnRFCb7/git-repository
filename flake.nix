@@ -78,7 +78,7 @@
                                             expected ,
                                             failure ,
                                             hooks ? { } ,
-                                            pkgs ? null ,
+                                            pkgs ,
                                             remotes ? { } ,
                                             resources ? null ,
                                             self ? null ,
