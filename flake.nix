@@ -17,7 +17,7 @@
                                 } :
                                     {
                                         init =
-                                            { pkgs , resources , self } @primary :
+                                            { mount , pkgs , resources , stage } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -58,7 +58,7 @@
                                                                                 mkdir --parents /mount/git-repository
                                                                                 cd /mount/git-repository
                                                                                 git init 2>&1
-                                                                                ${ if builtins.typeOf self == "string" then ''cd ${ self }/git-repository'' else "#" }
+                                                                                ${ if builtins.typeOf self == "string" then ''cd ${ mount }/git-repository'' else "#" }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
@@ -76,10 +76,11 @@
                                             expected ,
                                             failure ,
                                             hooks ? { } ,
+                                            mount ? null ,
                                             pkgs ,
                                             remotes ? { } ,
                                             resources ? null ,
-                                            self ? null ,
+                                            stage ? null ,
                                             setup ? null
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -95,7 +96,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
                                                                                 instance = implementation { configs = configs ; hooks = hooks ; remotes = remotes ; setup = setup ; } ;
                                                                                 in
                                                                                     ''
