@@ -42,7 +42,7 @@
                                                                                     {
                                                                                         lambda = path : value : ''ln --symbolic "${ value primary }" .git/hooks/${ builtins.elemAt path 0 }'' ;
                                                                                         path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                        string = path : value : ''ln --symbolic "${ value } .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                        string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
                                                                                     } ;
                                                                                 remotes =
                                                                                     {
@@ -59,7 +59,7 @@
                                                                                                     then
                                                                                                         ${ string } "$@"
                                                                                                     else
-                                                                                                        cat ${ string } "$@"
+                                                                                                        cat | ${ string } "$@"
                                                                                                     fi
                                                                                                 '' ;
                                                                                         in
