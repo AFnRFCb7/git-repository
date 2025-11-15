@@ -58,7 +58,7 @@
                                                                                 mkdir --parents /mount/git-repository
                                                                                 cd /mount/git-repository
                                                                                 git init 2>&1
-                                                                                ${ if builtins.typeOf mount == "string" then ''cd ${ mount }/git-repository'' else "#" }
+                                                                                ${ if builtins.typeOf mount == "string" then ''cd "${ mount }/git-repository"'' else "#" }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
