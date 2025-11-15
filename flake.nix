@@ -63,7 +63,7 @@
                                                                                 git init 2>&1
                                                                                 # echo 55810896-78f1-41a4-8082-c0f1fc2ce91d >> /tmp/DEBUG2
                                                                                 ${ if builtins.typeOf self == "string" then ''cd ${ mount }/git-repository'' else "#" }
-                                                                                echo a3f5a2af-710e-4cb2-84a4-d63643d0756d >> /tmp/DEBUG2
+                                                                                # echo a3f5a2af-710e-4cb2-84a4-d63643d0756d >> /tmp/DEBUG2
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
                                                                                 echo 06feede4-231a-4a0f-9e88-2515ec7851c3 >> /tmp/DEBUG2
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
