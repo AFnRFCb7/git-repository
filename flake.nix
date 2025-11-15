@@ -28,7 +28,7 @@
                                                                     let
                                                                         visitors =
                                                                             {
-                                                                                config =
+                                                                                configs =
                                                                                     {
                                                                                         bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
                                                                                         int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
@@ -73,9 +73,9 @@
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.config configs ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hook hooks ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remote remotes ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
                                                                                 mkdir --parents /mount/stage
                                                                                 cd /mount/git-repository
                                                                                 ${ visitor visitors.setup setup }
