@@ -55,14 +55,23 @@
                                                                                         setup ;
                                                                         in
                                                                             ''
+                                                                                echo 832be1bd-516c-45a1-a114-5a8bf131fdd4 >> /tmp/DEBUG2
                                                                                 mkdir --parents /mount/git-repository
+                                                                                echo 67146884-cc26-4917-a2a4-7aa136a2a697 >> /tmp/DEBUG2
                                                                                 cd /mount/git-repository
+                                                                                echo b8d0a6e1-1e72-4cbd-9905-b73065ead0f7 >> /tmp/DEBUG2
                                                                                 git init 2>&1
+                                                                                echo 55810896-78f1-41a4-8082-c0f1fc2ce91d >> /tmp/DEBUG2
                                                                                 ${ if builtins.typeOf self == "string" then ''cd ${ mount }/git-repository'' else "#" }
+                                                                                echo a3f5a2af-710e-4cb2-84a4-d63643d0756d >> /tmp/DEBUG2
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
+                                                                                echo 06feede4-231a-4a0f-9e88-2515ec7851c3 >> /tmp/DEBUG2
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                echo dfdf21b5-cff1-4514-ad00-c2ec953db1af >> /tmp/DEBUG2
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                                echo e7920f2a-8761-48f3-b20d-0c62ed74c05d >> /tmp/DEBUG2
                                                                                 ${ setup-visit }
+                                                                                echo ba79940a-a4be-4fd9-9f6e-776475f43e5d >> /tmp/DEBUG2
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
