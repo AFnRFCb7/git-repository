@@ -72,12 +72,12 @@
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
+                                                                                cd /mount/repository
                                                                                 git init 2>&1
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
                                                                                 mkdir --parents /mount/stage
-                                                                                cd /mount/repository
                                                                                 ${ visitor visitors.setup setup }
                                                                             '' ;
                                                             } ;
