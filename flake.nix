@@ -46,9 +46,9 @@
                                                                                     } ;
                                                                                 remotes =
                                                                                     {
-                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt 0 } "${ value primary }"'' ;
-                                                                                        path = path : value : ''git remote add ${ builtins.elemAt 0 } ${ builtins.toString value }'' ;
-                                                                                        string = path : value : ''git remote add ${ builtins.elemAt 0 } "${ value }"'' ;
+                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value primary }"'' ;
+                                                                                        path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                        string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
                                                                                     } ;
                                                                                 setup =
                                                                                     let
