@@ -26,47 +26,63 @@
                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                 text =
                                                                     let
-                                                                        config-visit =
-                                                                            visitor
-                                                                                {
-                                                                                    lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value primary }"'' ;
-                                                                                    string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                }
-                                                                                configs ;
-                                                                        setup-visit =
-                                                                            let
-                                                                                string =
-                                                                                    string :
-                                                                                        ''
-                                                                                            if [[ -t 0 ]]
-                                                                                            then
-                                                                                                ${ string } "$@"
-                                                                                            else
-                                                                                                cat | ${ string } "$@"
-                                                                                            fi
-                                                                                        '' ;
-                                                                                in
-                                                                                    visitor
-                                                                                        {
-                                                                                            lambda = path : value : string ( value primary ) ;
-                                                                                            null = path : value : "#" ;
-                                                                                            string = path : value : string value ;
-                                                                                        }
-                                                                                        setup ;
+                                                                        visitors =
+                                                                            {
+                                                                                config =
+                                                                                    {
+                                                                                        bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
+                                                                                        int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                        float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                        lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value primary }"'' ;
+                                                                                        null = path : value : ''git config ${ builtins.elemAt path 0 } null'' ;
+                                                                                        path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                        string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
+                                                                                    } ;
+                                                                                hooks =
+                                                                                    {
+                                                                                        lambda = path : value : ''ln --symbolic "${ value primary }" .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                        path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                        string = path : value : ''ln --symbolic "${ value } .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                    } ;
+                                                                                remotes =
+                                                                                    {
+                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt 0 } "${ value primary }"'' ;
+                                                                                        path = path : value : ''git remote add ${ builtins.elemAt 0 } ${ builtins.toString value }'' ;
+                                                                                        string = path : value : ''git remote add ${ builtins.elemAt 0 } "${ value }"'' ;
+                                                                                    } ;
+                                                                                setup =
+                                                                                    let
+                                                                                        string =
+                                                                                            string :
+                                                                                                ''
+                                                                                                    if [[ -t 0 ]]
+                                                                                                    then
+                                                                                                        ${ string } "$@"
+                                                                                                    else
+                                                                                                        cat ${ string } "$@"
+                                                                                                    fi
+                                                                                                '' ;
+                                                                                        in
+                                                                                            {
+                                                                                                lambda = path : value : string ( value primary ) ;
+                                                                                                null = path : value : "#" ;
+                                                                                                string = path : value : string value ;
+                                                                                            } ;
+                                                                            } ;
                                                                         in
                                                                             ''
-                                                                                mkdir --parents /mount/git-repository
-                                                                                cd /mount/git-repository
+                                                                                mkdir --parents /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ if builtins.typeOf mount == "string" then ''cd "${ mount }/git-repository"'' else "#" }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( config-visit ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" ".git/hooks/${ name }"'' ) hooks ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                                ${ setup-visit }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.config configs ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hook hooks ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remote remotes ) ) }
+                                                                                mkdir --parents /mount/stage
+                                                                                cd /mount/git-repository
+                                                                                ${ visitor visitors.setup setup }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
-                                        targets = [ "git-repository" ] ;
+                                        targets = [ "repository" "stage" ] ;
                                     } ;
                             in
                                 {
@@ -103,7 +119,7 @@
                                                                                         OUT="$1"
                                                                                         touch "$OUT"
                                                                                         ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 "We expected the git-repository names to be init targets but we observed ${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
-                                                                                        ${ if [ "git-repository" ] != instance.targets then ''failure 5c205b3b "We expected the git-repository targets to be git-repository but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
+                                                                                        ${ if [ "repository" "stage" ] != instance.targets then ''failure 5c205b3b "We expected the git-repository targets to be repository stage but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
                                                                                         ${ if init != expected then ''failure ecfb2043 "We expected the git-repository init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "" }
                                                                                     '' ;
                                                                     }
