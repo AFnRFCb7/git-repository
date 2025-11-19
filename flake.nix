@@ -78,7 +78,7 @@
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
                                                                                 mkdir --parents /mount/stage
-                                                                                cd ${ mount }/repository
+                                                                                cd "${ mount }/repository"
                                                                                 ${ visitor visitors.setup setup }
                                                                             '' ;
                                                             } ;
