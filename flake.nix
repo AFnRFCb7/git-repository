@@ -66,7 +66,7 @@
                                                                                                 } :
                                                                                                     fully-qualified-path :
                                                                                                         ''
-                                                                                                            cd ${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ mount "repository" ] fully-qualfied-path ] ) }
+                                                                                                            cd ${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ mount "repository" ] fully-qualified-path ] ) }
                                                                                                             ${ visitor visitors.ssh ssh }
                                                                                                             ${ visitor visitors.config email }
                                                                                                             ${ visitor visitors.config name }
