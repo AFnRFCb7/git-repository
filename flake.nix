@@ -51,6 +51,7 @@
                                                                                     } ;
                                                                                 modules =
                                                                                     {
+                                                                                        null = path : value : "#" ;
                                                                                         set =
                                                                                             path :
                                                                                                 {
@@ -158,8 +159,8 @@
                                             mount ? null ,
                                             name ,
                                             pkgs ,
-                                            post-setup ,
-                                            pre-setup ,
+                                            post-setup ? null ,
+                                            pre-setup ? null ,
                                             remotes ? { } ,
                                             resources ? null ,
                                             stage ? null
