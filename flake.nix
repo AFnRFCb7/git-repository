@@ -93,17 +93,7 @@
                                                                                                 sub = builtins.attrValues ( builtins.map ( { name , value } : { name = builtins.concatStringsSep "/" [ name module-name ] ; } ) ( builtins.attrValues submodules ) ) ;
                                                                                                 in
                                                                                                     ''
-                                                                                                        cd ${ builtins.concatStringsSep "/" [ mount "repository" module-name ] }
-                                                                                                        ${ visitor visitors.ssh ssh }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) } ;
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
-                                                                                                        ${ visitor visitors.setup pre-setup }
-                                                                                                        git submodule init 2>&1
-                                                                                                        git submodule update --init --update 2>&1
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
-                                                                                                        ${ visitor visitors.setup post-setup }
+
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
