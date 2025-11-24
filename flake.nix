@@ -40,48 +40,51 @@
                                                                                         ssh = ssh ;
                                                                                     } ;
                                                                                 visitors =
-                                                                                    {
-                                                                                        configs =
+                                                                                    let
+                                                                                        stage = "${ mount }/stage" ;
+                                                                                        in
                                                                                             {
-                                                                                                bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
-                                                                                                int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value mount }"'' ;
-                                                                                                null = path : value : ''#'' ;
-                                                                                                path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                            } ;
-                                                                                        hooks =
-                                                                                            {
-                                                                                                lambda = path : value : ''ln --symbolic "${ value mount }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                                path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                                string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                            } ;
-                                                                                        remotes =
-                                                                                            {
-                                                                                                lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value mount }"'' ;
-                                                                                                path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                            } ;
-                                                                                        setup =
-                                                                                            let
-                                                                                                string =
-                                                                                                    string :
-                                                                                                        ''
-                                                                                                            if "$HAS_STANDARD_INPUT"
-                                                                                                            then
-                                                                                                                ${ string } "$@"
-                                                                                                            else
-                                                                                                                echo "$STANDARD_INPUT" | ${ string } "$@"
-                                                                                                            fi
-                                                                                                        '' ;
-                                                                                                in
+                                                                                                configs =
                                                                                                     {
-                                                                                                        lambda = path : value : string ( value primary ) ;
-                                                                                                        null = path : value : "#" ;
-                                                                                                        string = path : value : string value ;
+                                                                                                        bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
+                                                                                                        int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                        float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                        lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value stage }"'' ;
+                                                                                                        null = path : value : ''#'' ;
+                                                                                                        path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                        string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
                                                                                                     } ;
-                                                                                    } ;
+                                                                                                hooks =
+                                                                                                    {
+                                                                                                        lambda = path : value : ''ln --symbolic "${ value stage }" .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                                        path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                                        string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                                    } ;
+                                                                                                remotes =
+                                                                                                    {
+                                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value stage }"'' ;
+                                                                                                        path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                        string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
+                                                                                                    } ;
+                                                                                                setup =
+                                                                                                    let
+                                                                                                        string =
+                                                                                                            string :
+                                                                                                                ''
+                                                                                                                    if "$HAS_STANDARD_INPUT"
+                                                                                                                    then
+                                                                                                                        ${ string } "$@"
+                                                                                                                    else
+                                                                                                                        echo "$STANDARD_INPUT" | ${ string } "$@"
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        in
+                                                                                                            {
+                                                                                                                lambda = path : value : string ( value primary ) ;
+                                                                                                                null = path : value : "#" ;
+                                                                                                                string = path : value : string value ;
+                                                                                                            } ;
+                                                                                            } ;
                                                                                 in
                                                                                     module-name :
                                                                                         {
