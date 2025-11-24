@@ -33,6 +33,7 @@
                                                                     let
                                                                         mapper =
                                                                             let
+                                                                                ssh-command = ssh ;
                                                                                 visitors =
                                                                                     {
                                                                                         configs =
@@ -86,7 +87,7 @@
                                                                                             pre-setup ? null ,
                                                                                             post-setup ? null ,
                                                                                             remotes ? { } ,
-                                                                                            ssh ? ssh ,
+                                                                                            ssh ? ssh-command ,
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
