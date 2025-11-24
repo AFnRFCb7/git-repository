@@ -139,14 +139,14 @@
                                                                                 if [[ -t 0 ]]
                                                                                 then
                                                                                     # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=true
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT="$( cat )" || failure 1098ed4e
-                                                                                else
-                                                                                    # shellcheck disable=SC2034
                                                                                     HAS_STANDARD_INPUT=false
                                                                                     # shellcheck disable=SC2034
                                                                                     STANDARD_INPUT=
+                                                                                else
+                                                                                    # shellcheck disable=SC2034
+                                                                                    HAS_STANDARD_INPUT=true
+                                                                                    # shellcheck disable=SC2034
+                                                                                    STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
                                                                             '' ;
