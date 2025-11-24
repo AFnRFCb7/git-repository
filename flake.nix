@@ -126,7 +126,7 @@
                                                                                             export GIT_SSH_COMMAND
                                                                                         '' ;
                                                                             } ;
-                                                                        wtf =
+                                                                        in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
@@ -142,9 +142,6 @@
                                                                                     STANDARD_INPUT=
                                                                                 fi
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper set ) ) }
-                                                                            '' ;
-                                                                        in
-                                                                            ''
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
