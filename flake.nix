@@ -109,6 +109,7 @@
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
                                                                                                         ${ visitor visitors.setup pre-setup }
                                                                                                         git submodule init 2>&1
+                                                                                                        git submodule update --init --update 2>&1
 
                                                                                                     '' ;
                                                                         ssh-command =
