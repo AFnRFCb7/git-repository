@@ -33,7 +33,12 @@
                                                                     let
                                                                         mapper =
                                                                             let
-                                                                                ssh-command = ssh ;
+                                                                                defaults =
+                                                                                    {
+                                                                                        email = email ;
+                                                                                        name = name ;
+                                                                                        ssh = ssh ;
+                                                                                    } ;
                                                                                 visitors =
                                                                                     {
                                                                                         configs =
@@ -81,13 +86,13 @@
                                                                                     module-name :
                                                                                         {
                                                                                             configs ? { } ,
-                                                                                            email ? email ,
+                                                                                            email ? default.email ,
                                                                                             hooks ? { } ,
-                                                                                            name ? name ,
+                                                                                            name ? defaults.name ,
                                                                                             pre-setup ? null ,
                                                                                             post-setup ? null ,
                                                                                             remotes ? { } ,
-                                                                                            ssh ? ssh-command ,
+                                                                                            ssh ? defaults.ssh ,
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
