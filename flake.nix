@@ -111,7 +111,7 @@
                                                                                                         git submodule init 2>&1
                                                                                                         git submodule update --init --update 2>&1
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
-                                                                                                        ${ visitor visitors.setup post-setup }
+
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
@@ -148,6 +148,7 @@
                                                                                     # shellcheck disable=SC2034
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
