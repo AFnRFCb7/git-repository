@@ -95,12 +95,7 @@
                                                                                                     ''
                                                                                                         cd ${ builtins.concatStringsSep "/" [ mount "repository" module-name ] }
                                                                                                         ${ visitor visitors.ssh ssh }
-                                                                                                        ${ visitor visitors.config email }
-                                                                                                        ${ visitor visitors.config name }
-                                                                                                        ${ visitor visitors.config ssh }
-                                                                                                        ${ visitor visitors.config email }
-                                                                                                        ${ visitor visitors.config name }
-                                                                                                        ${ visitor visitors.config ssh }
+                                                                                                        ${ builtins.concatStringsSep "\n" ( visitor visitors.config { "core.sshCommand" = ssh ; "user.email" = email ; "user.name" = name ; } ) } ;
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
