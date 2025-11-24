@@ -90,7 +90,7 @@
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
-                                                                                                sub = builtins.attrValues ( builtins.map ( { name , value } : { name = builtins.concatStringsSep "/" [ name module-name ] ; } ) ( builtins.attrValues submodules ) ) ;
+                                                                                                sub = builtins.attrValues ( builtins.map ( { name , value } : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) ( builtins.attrValues submodules ) ) ;
                                                                                                 in
                                                                                                     ''
                                                                                                         cd ${ builtins.concatStringsSep "/" [ mount "repository" module-name ] }
