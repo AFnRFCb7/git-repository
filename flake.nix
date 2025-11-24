@@ -126,7 +126,7 @@
                                                                                             export GIT_SSH_COMMAND
                                                                                         '' ;
                                                                             } ;
-                                                                        in
+                                                                        wtf =
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
@@ -141,8 +141,11 @@
                                                                                     HAS_STANDARD_INPUT=false
                                                                                     STANDARD_INPUT=
                                                                                 fi
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper set ) ) }
                                                                             '' ;
-#                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper set ) ) }
+                                                                        in
+                                                                            ''
+                                                                            '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
                                         targets = [ "repository" "stage" ] ;
