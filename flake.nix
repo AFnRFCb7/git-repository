@@ -110,7 +110,7 @@
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
                                                                                                         ${ visitor visitors.setup post-setup }
                                                                                                     '' ;
-                                                                        ssh =
+                                                                        ssh-command =
                                                                             {
                                                                                 lambda =
                                                                                     path : value :
@@ -131,7 +131,7 @@
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ visitor visitors.ssh ssh }
+                                                                                ${ visitor ssh-command ssh }
                                                                                 mkdir --parents /mount/stage
                                                                                 if [[ -t 0 ]]
                                                                                 then
