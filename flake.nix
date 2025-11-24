@@ -93,7 +93,7 @@
                                                                                                 sub = builtins.attrValues ( builtins.map ( { name , value } : { name = builtins.concatStringsSep "/" [ name module-name ] ; } ) ( builtins.attrValues submodules ) ) ;
                                                                                                 in
                                                                                                     ''
-                                                                                                        cd ${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ mount "repository" ] parent-path [ module-name ] ] ) }
+                                                                                                        cd ${ builtins.concatStringsSep "/" [ mount "repository" module-name ] }
                                                                                                         ${ visitor visitors.ssh ssh }
                                                                                                         ${ visitor visitors.config email }
                                                                                                         ${ visitor visitors.config name }
