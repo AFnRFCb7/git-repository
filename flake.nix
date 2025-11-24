@@ -31,101 +31,101 @@
                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                 text =
                                                                     let
-                                                                        visitors =
-                                                                            {
-                                                                                configs =
+                                                                        mapper =
+                                                                            let
+                                                                                visitors =
                                                                                     {
-                                                                                        bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
-                                                                                        int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                        float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                        lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value primary }"'' ;
-                                                                                        null = path : value : ''#'' ;
-                                                                                        path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                        string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                    } ;
-                                                                                hooks =
-                                                                                    {
-                                                                                        lambda = path : value : ''ln --symbolic "${ value primary }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                        path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                        string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                    } ;
-                                                                                modules =
-                                                                                    {
-                                                                                        null = path : value : "#" ;
-                                                                                        set =
-                                                                                            path :
-                                                                                                {
-                                                                                                    configs ? { } ,
-                                                                                                    email ? email ,
-                                                                                                    hooks ? { } ,
-                                                                                                    name ? name ,
-                                                                                                    pre-setup ? null ,
-                                                                                                    post-setup ? null ,
-                                                                                                    remotes ? { } ,
-                                                                                                    ssh ? ssh ,
-                                                                                                    submodules ? { }
-                                                                                                } :
-                                                                                                    fully-qualified-path :
-                                                                                                        ''
-                                                                                                            cd ${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ mount "repository" ] fully-qualified-path ] ) }
-                                                                                                            ${ visitor visitors.ssh ssh }
-                                                                                                            ${ visitor visitors.config email }
-                                                                                                            ${ visitor visitors.config name }
-                                                                                                            ${ visitor visitors.config ssh }
-                                                                                                            ${ visitor visitors.config email }
-                                                                                                            ${ visitor visitors.config name }
-                                                                                                            ${ visitor visitors.config ssh }
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
-                                                                                                            ${ visitor visitors.setup pre-setup }
-                                                                                                            git submodule init 2>&1
-                                                                                                            git submodule update --init --update 2>&1
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : value : builtins.concatLists [ fully-qualified-path [ name ] ] ) ( visitor visitors.modules submodules ) ) ) }
-                                                                                                            ${ visitor visitors.setup post-setup }
-                                                                                                        '' ;
-                                                                                    } ;
-                                                                                remotes =
-                                                                                    {
-                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value primary }"'' ;
-                                                                                        path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                        string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                    } ;
-                                                                                setup =
-                                                                                    let
-                                                                                        string =
-                                                                                            string :
-                                                                                                ''
-                                                                                                    if "$HAS_STANDARD_INPUT"
-                                                                                                    then
-                                                                                                        ${ string } "$@"
-                                                                                                    else
-                                                                                                        echo "$STANDARD_INPUT" | ${ string } "$@"
-                                                                                                    fi
-                                                                                                '' ;
-                                                                                        in
+                                                                                        configs =
                                                                                             {
-                                                                                                lambda = path : value : string ( value primary ) ;
-                                                                                                null = path : value : "#" ;
-                                                                                                string = path : value : string value ;
+                                                                                                bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
+                                                                                                int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value primary }"'' ;
+                                                                                                null = path : value : ''#'' ;
+                                                                                                path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
                                                                                             } ;
-                                                                                ssh =
-                                                                                    {
-                                                                                        lambda =
-                                                                                            path : value :
-                                                                                                ''
-                                                                                                   GIT_SSH_COMMAND=${ value primary }
-                                                                                                   export GIT_SSH_COMMMAND
-                                                                                                '' ;
-                                                                                        null = path : value : "#" ;
-                                                                                        string =
-                                                                                            path : value :
-                                                                                                ''
-                                                                                                    GIT_SSH_COMMAND=${ value }
-                                                                                                    export GIT_SSH_COMMAND
-                                                                                                '' ;
+                                                                                        hooks =
+                                                                                            {
+                                                                                                lambda = path : value : ''ln --symbolic "${ value primary }" .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                                path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                                string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
+                                                                                            } ;
+                                                                                        remotes =
+                                                                                            {
+                                                                                                lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value primary }"'' ;
+                                                                                                path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
+                                                                                                string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
+                                                                                            } ;
+                                                                                        setup =
+                                                                                            let
+                                                                                                string =
+                                                                                                    string :
+                                                                                                        ''
+                                                                                                            if "$HAS_STANDARD_INPUT"
+                                                                                                            then
+                                                                                                                ${ string } "$@"
+                                                                                                            else
+                                                                                                                echo "$STANDARD_INPUT" | ${ string } "$@"
+                                                                                                            fi
+                                                                                                        '' ;
+                                                                                                in
+                                                                                                    {
+                                                                                                        lambda = path : value : string ( value primary ) ;
+                                                                                                        null = path : value : "#" ;
+                                                                                                        string = path : value : string value ;
+                                                                                                    } ;
+                                                                                        ssh =
+                                                                                            {
+                                                                                                lambda =
+                                                                                                    path : value :
+                                                                                                        ''
+                                                                                                           GIT_SSH_COMMAND=${ value primary }
+                                                                                                           export GIT_SSH_COMMMAND
+                                                                                                        '' ;
+                                                                                                null = path : value : "#" ;
+                                                                                                string =
+                                                                                                    path : value :
+                                                                                                        ''
+                                                                                                            GIT_SSH_COMMAND=${ value }
+                                                                                                            export GIT_SSH_COMMAND
+                                                                                                        '' ;
+                                                                                            } ;
                                                                                     } ;
-                                                                            } ;
+                                                                                in
+                                                                                    module-name :
+                                                                                        {
+                                                                                            configs ? { } ,
+                                                                                            email ? email ,
+                                                                                            hooks ? { } ,
+                                                                                            name ? name ,
+                                                                                            pre-setup ? null ,
+                                                                                            post-setup ? null ,
+                                                                                            remotes ? { } ,
+                                                                                            ssh ? ssh ,
+                                                                                            submodules ? { }
+                                                                                        } :
+                                                                                            let
+                                                                                                sub = builtins.attrValues ( builtins.map ( { name , value } : { name = builtins.concatStringsSep "/" [ name module-name ] ; } ) ( builtins.attrValues submodules ) ) ;
+                                                                                                in
+                                                                                                    ''
+                                                                                                        cd ${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ mount "repository" ] parent-path [ module-name ] ] ) }
+                                                                                                        ${ visitor visitors.ssh ssh }
+                                                                                                        ${ visitor visitors.config email }
+                                                                                                        ${ visitor visitors.config name }
+                                                                                                        ${ visitor visitors.config ssh }
+                                                                                                        ${ visitor visitors.config email }
+                                                                                                        ${ visitor visitors.config name }
+                                                                                                        ${ visitor visitors.config ssh }
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
+                                                                                                        ${ visitor visitors.setup pre-setup }
+                                                                                                        git submodule init 2>&1
+                                                                                                        git submodule update --init --update 2>&1
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
+                                                                                                        ${ visitor visitors.setup post-setup }
+                                                                                                    '' ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
