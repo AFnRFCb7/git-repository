@@ -136,6 +136,8 @@
                                                                                     HAS_STANDARD_INPUT=false
                                                                                     STANDARD_INPUT=
                                                                                 fi
+                                                                                export HAS_STANDARD_INPUT
+                                                                                export STANDARD_INPUT
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
