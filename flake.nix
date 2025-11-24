@@ -86,7 +86,7 @@
                                                                                     module-name :
                                                                                         {
                                                                                             configs ? { } ,
-                                                                                            email ? default.email ,
+                                                                                            email ? defaults.email ,
                                                                                             hooks ? { } ,
                                                                                             name ? defaults.name ,
                                                                                             pre-setup ? null ,
