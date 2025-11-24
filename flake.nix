@@ -136,7 +136,7 @@
                                                                                     HAS_STANDARD_INPUT=false
                                                                                     STANDARD_INPUT=
                                                                                 fi
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper set ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { name = "" ; value = set ; } ) ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
