@@ -94,7 +94,7 @@
                                                                                                 in
                                                                                                     ''
                                                                                                         cd ${ builtins.concatStringsSep "/" [ mount "repository" module-name ] }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) } ;
+                                                                                                        ${ builtins.concatStringsSep "\n" ( visitor visitors.configs { "flag3" = true ; "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) } ;
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
