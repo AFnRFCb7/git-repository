@@ -99,7 +99,7 @@
                                                                                                 sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
                                                                                                 in
                                                                                                     ''
-                                                                                                        cd "${ builtins.concatStringsSep "/" module-name }"
+                                                                                                        cd "${ module-name }"
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "flag3" = true ; "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) ) } ;
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
