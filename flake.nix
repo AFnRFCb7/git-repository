@@ -75,22 +75,6 @@
                                                                                                         null = path : value : "#" ;
                                                                                                         string = path : value : string value ;
                                                                                                     } ;
-                                                                                        ssh =
-                                                                                            {
-                                                                                                lambda =
-                                                                                                    path : value :
-                                                                                                        ''
-                                                                                                           GIT_SSH_COMMAND=${ value primary }
-                                                                                                           export GIT_SSH_COMMMAND
-                                                                                                        '' ;
-                                                                                                null = path : value : "#" ;
-                                                                                                string =
-                                                                                                    path : value :
-                                                                                                        ''
-                                                                                                            GIT_SSH_COMMAND=${ value }
-                                                                                                            export GIT_SSH_COMMAND
-                                                                                                        '' ;
-                                                                                            } ;
                                                                                     } ;
                                                                                 in
                                                                                     module-name :
@@ -126,6 +110,22 @@
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
                                                                                                         ${ visitor visitors.setup post-setup }
                                                                                                     '' ;
+                                                                        ssh =
+                                                                            {
+                                                                                lambda =
+                                                                                    path : value :
+                                                                                        ''
+                                                                                           GIT_SSH_COMMAND=${ value primary }
+                                                                                           export GIT_SSH_COMMMAND
+                                                                                        '' ;
+                                                                                null = path : value : "#" ;
+                                                                                string =
+                                                                                    path : value :
+                                                                                        ''
+                                                                                            GIT_SSH_COMMAND=${ value }
+                                                                                            export GIT_SSH_COMMAND
+                                                                                        '' ;
+                                                                            } ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
@@ -141,7 +141,7 @@
                                                                                     HAS_STANDARD_INPUT=false
                                                                                     STANDARD_INPUT=
                                                                                 fi
-                                                                                ${ visitor visitors.modules set }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper set ) ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
