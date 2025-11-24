@@ -110,7 +110,8 @@
                                                                                                         ${ visitor visitors.setup pre-setup }
                                                                                                         git submodule init 2>&1
                                                                                                         git submodule update --init --update 2>&1
-
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
+                                                                                                        ${ visitor visitors.setup post-setup }
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
