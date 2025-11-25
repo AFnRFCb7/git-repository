@@ -182,7 +182,7 @@
                                             expected ,
                                             failure ,
                                             hooks ? { } ,
-                                            mount ? "4d3ec071c498c94634cc669d3f2d64e4984020cdacdba09b5206b92264b3b78fb3f9327d5480f3c14ec9da74e8a64c45ecc3ebe61dc8997289572c4465fc75f5" ,
+                                            mount ? null , # "4d3ec071c498c94634cc669d3f2d64e4984020cdacdba09b5206b92264b3b78fb3f9327d5480f3c14ec9da74e8a64c45ecc3ebe61dc8997289572c4465fc75f5" ,
                                             name ? null ,
                                             pkgs ,
                                             post-setup ? null ,
