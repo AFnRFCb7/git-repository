@@ -99,7 +99,9 @@
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
-                                                                                                xxx =
+
+                                                                                                sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
+                                                                                                in
                                                                                                     ''
                                                                                                         cd "${ module-name }"
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) ) } ;
@@ -111,11 +113,6 @@
                                                                                                         git submodule update --init --update 2>&1
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
                                                                                                         ${ visitor visitors.setup post-setup }
-                                                                                                    '' ;
-                                                                                                sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
-                                                                                                in
-                                                                                                    ''
-
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
@@ -133,27 +130,6 @@
                                                                                             export GIT_SSH_COMMAND
                                                                                         '' ;
                                                                             } ;
-                                                                        xxx =
-                                                                            ''
-                                                                                mkdir --parents /mount/repository
-                                                                                cd /mount/repository
-                                                                                git init 2>&1
-                                                                                ${ visitor ssh-command ssh }
-                                                                                mkdir --parents /mount/stage
-                                                                                if [[ -t 0 ]]
-                                                                                then
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=false
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT=
-                                                                                else
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=true
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT="$( cat )" || failure 1098ed4e
-                                                                                fi
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
-                                                                            '' ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
@@ -174,7 +150,6 @@
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
-
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
