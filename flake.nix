@@ -159,6 +159,7 @@
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
+                                                                                ${ visitor ssh-command ssh }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
