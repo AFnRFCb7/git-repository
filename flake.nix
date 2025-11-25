@@ -133,7 +133,7 @@
                                                                                             export GIT_SSH_COMMAND
                                                                                         '' ;
                                                                             } ;
-                                                                        in
+                                                                        xxx =
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
@@ -153,6 +153,9 @@
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
+                                                                            '' ;
+                                                                        in
+                                                                            ''
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
