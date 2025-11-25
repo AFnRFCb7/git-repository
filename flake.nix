@@ -42,7 +42,7 @@
                                                                                     } ;
                                                                                 visitors =
                                                                                     let
-                                                                                        stage = "${ mount }/stage" ;
+                                                                                        stage = string { template = { mount } : "${ mount }/stage" ; } ; values = { mount = mount ; } ;
                                                                                         in
                                                                                             {
                                                                                                 configs =
