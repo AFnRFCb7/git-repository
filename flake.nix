@@ -99,6 +99,14 @@
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
+                                                                                                xxx =
+                                                                                                    ''
+                                                                                                        ${ visitor visitors.setup pre-setup }
+                                                                                                        git submodule init 2>&1
+                                                                                                        git submodule update --init --update 2>&1
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
+                                                                                                        ${ visitor visitors.setup post-setup }
+                                                                                                    '' ;
                                                                                                 sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
                                                                                                 in
                                                                                                     ''
@@ -107,10 +115,7 @@
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
-                                                                                                        ${ visitor visitors.setup pre-setup }
-                                                                                                        git submodule init 2>&1
-                                                                                                        git submodule update --init --update 2>&1
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
+
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
