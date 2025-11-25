@@ -159,20 +159,6 @@
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ visitor ssh-command ssh }
-                                                                                mkdir --parents /mount/stage
-                                                                                if [[ -t 0 ]]
-                                                                                then
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=false
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT=
-                                                                                else
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=true
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT="$( cat )" || failure 1098ed4e
-                                                                                fi
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
