@@ -23,7 +23,7 @@
                                 } @set :
                                     {
                                         init =
-                                            { mount , pkgs , resources , stage } @primary :
+                                            { mount , pkgs , resources } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -197,7 +197,6 @@
                                             remotes ? { } ,
                                             resources ? null ,
                                             ssh ? null ,
-                                            stage ? null ,
                                             submodules ? { }
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -213,7 +212,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                 instance =
                                                                                     implementation
                                                                                         {
