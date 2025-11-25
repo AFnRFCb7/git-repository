@@ -99,7 +99,7 @@
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
-                                                                                                sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
+                                                                                                sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ module-name name ] ; value = value ; } ) submodules ) ) ;
                                                                                                 in
                                                                                                     ''
                                                                                                         cd "${ module-name }"
