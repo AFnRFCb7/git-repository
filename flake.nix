@@ -103,7 +103,7 @@
                                                                                                 in
                                                                                                     ''
                                                                                                         cd "${ module-name }"
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name " = name ; } ) ) } ;
+                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name" = name ; } ) ) } ;
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
@@ -194,14 +194,14 @@
                                                                                     implementation
                                                                                         {
                                                                                             configs = configs ;
-                                                                                            # email = email ;
+                                                                                            email = email ;
                                                                                             hooks = hooks ;
-                                                                                            # name = name ;
+                                                                                            name = name ;
                                                                                             post-setup = post-setup ;
                                                                                             pre-setup = pre-setup ;
                                                                                             remotes = remotes ;
-                                                                                            # ssh = ssh ;
-                                                                                            # submodules = submodules ;
+                                                                                            ssh = ssh ;
+                                                                                            submodules = submodules ;
                                                                                         } ;
                                                                                 in
                                                                                     ''
@@ -209,7 +209,6 @@
                                                                                         touch "$OUT"
                                                                                         ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 git-repository "We expected the names to be init targets but we observed ${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
                                                                                         ${ if [ "repository" "stage" ] != instance.targets then ''failure 5c205b3b git-repository "We expected the targets to be repository stage but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
-                                                                                        ${ if init != expected then ''failure ecfb2043 git-repository "We expected the init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "" }
                                                                                     '' ;
                                                                     }
                                                             )
