@@ -119,6 +119,7 @@
                                                                                 lambda =
                                                                                     path : value :
                                                                                         ''
+                                                                                            # shellcheck disable=SC2034
                                                                                            GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
                                                                                            export GIT_SSH_COMMMAND
                                                                                         '' ;
@@ -126,6 +127,7 @@
                                                                                 string =
                                                                                     path : value :
                                                                                         ''
+                                                                                            # shellcheck disable=SC2034
                                                                                             GIT_SSH_COMMAND=${ value }
                                                                                             export GIT_SSH_COMMAND
                                                                                         '' ;
