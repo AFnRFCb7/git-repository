@@ -122,7 +122,7 @@
                                                                                 lambda =
                                                                                     path : value :
                                                                                         ''
-                                                                                           GIT_SSH_COMMAND=${ value primary }
+                                                                                           GIT_SSH_COMMAND=${ value "${ mount }/stage" }
                                                                                            export GIT_SSH_COMMMAND
                                                                                         '' ;
                                                                                 null = path : value : "#" ;
