@@ -134,11 +134,17 @@
                                                                             {
                                                                                 lambda =
                                                                                     path : value :
-                                                                                        ''
-                                                                                           # shellcheck disable=SC2034
-                                                                                           GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
-                                                                                           export GIT_SSH_COMMMAND
-                                                                                        '' ;
+                                                                                        string
+                                                                                            {
+                                                                                                template =
+                                                                                                    { mount } :
+                                                                                                        ''
+                                                                                                           # shellcheck disable=SC2034
+                                                                                                           GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
+                                                                                                           export GIT_SSH_COMMMAND
+                                                                                                        '' ;
+                                                                                                values = { mount = mount ; } ;
+                                                                                            } ;
                                                                                 null = path : value : "#" ;
                                                                                 string =
                                                                                     path : value :
