@@ -5,6 +5,7 @@
             {
                 lib =
                     {
+                        string ,
                         visitor
                     } :
                         let
@@ -101,18 +102,34 @@
                                                                                             let
                                                                                                 sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ module-name name ] ; value = value ; } ) submodules ) ) ;
                                                                                                 in
-                                                                                                    ''
-                                                                                                        cd "${ module-name }"
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name" = name ; } ) ) } ;
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) }
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) }
-                                                                                                        ${ visitor visitors.setup pre-setup }
-                                                                                                        git submodule init 2>&1
-                                                                                                        git submodule update --init --checkout 2>&1
-                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
-                                                                                                        ${ visitor visitors.setup post-setup }
-                                                                                                    '' ;
+                                                                                                    string
+                                                                                                        {
+                                                                                                            template =
+                                                                                                                { configs , defaults , hooks , module-name , post-setup , pre-setup , remotes , submodules } :
+                                                                                                                    ''
+                                                                                                                        cd "${ module-name }"
+                                                                                                                        ${ defaults }
+                                                                                                                        ${ configs }
+                                                                                                                        ${ hooks }
+                                                                                                                        ${ remotes }
+                                                                                                                        ${ pre-setup }
+                                                                                                                        git submodule init 2>&1
+                                                                                                                        git submodule update --init --checkout 2>&1
+                                                                                                                        ${ submodules }
+                                                                                                                        ${ post-setup }
+                                                                                                                    '' ;
+                                                                                                            values =
+                                                                                                                {
+                                                                                                                    configs = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) ;
+                                                                                                                    hooks = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) ;
+                                                                                                                    defaults = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name" = name ; } ) ) ;
+                                                                                                                    module-name = module-name ;
+                                                                                                                    post-setup = visitor visitors.setup post-setup ;
+                                                                                                                    pre-setup = visitor visitors.setup pre-setup ;
+                                                                                                                    remotes = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) ;
+                                                                                                                    submodules = builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) ;
+                                                                                                                } ;
+                                                                                                        } ;
                                                                         ssh-command =
                                                                             {
                                                                                 lambda =
