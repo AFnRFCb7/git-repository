@@ -130,6 +130,7 @@
                                                                                                                     submodules = builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) ;
                                                                                                                 } ;
                                                                                                         } ;
+                                                                        root-name = string { template = { mount } : "${ mount }/repository" ; values = { mount = mount ; } ; } ;
                                                                         ssh-command =
                                                                             {
                                                                                 lambda =
@@ -173,7 +174,7 @@
                                                                                     # shellcheck disable=SC2034
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ mount }/repository" = set ; } ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${root-name }" = set ; } ) ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
