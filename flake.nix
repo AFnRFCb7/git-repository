@@ -161,18 +161,20 @@
                                     check =
                                         {
                                             configs ? { } ,
-                                            email ,
+                                            email ? null ,
                                             expected ,
                                             failure ,
                                             hooks ? { } ,
                                             mount ? null ,
-                                            name ,
+                                            name ? null ,
                                             pkgs ,
                                             post-setup ? null ,
                                             pre-setup ? null ,
                                             remotes ? { } ,
                                             resources ? null ,
-                                            stage ? null
+                                            ssh ? null ,
+                                            stage ? null ,
+                                            submodules ? { }
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -188,7 +190,19 @@
                                                                         text =
                                                                             let
                                                                                 init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
-                                                                                instance = implementation { configs = configs ; email = email ; hooks = hooks ; name = name ; post-setup = post-setup ; pre-setup = pre-setup ; remotes = remotes ; } ;
+                                                                                instance =
+                                                                                    implementation
+                                                                                        {
+                                                                                            configs = configs ;
+                                                                                            email = email ;
+                                                                                            hooks = hooks ;
+                                                                                            name = name ;
+                                                                                            post-setup = post-setup ;
+                                                                                            pre-setup = pre-setup ;
+                                                                                            remotes = remotes ;
+                                                                                            ssh = ssh ;
+                                                                                            submodules = submodules ;
+                                                                                        } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
