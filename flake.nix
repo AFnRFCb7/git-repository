@@ -226,7 +226,7 @@
                                                                                         touch "$OUT"
                                                                                         ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 git-repository "We expected the names to be init targets but we observed ${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
                                                                                         ${ if [ "repository" "stage" ] != instance.targets then ''failure 5c205b3b git-repository "We expected the targets to be repository stage but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
-                                                                                        ${ if init != expected then ''failure ecfb2043 git-repository "We expected the init to be but we observed "'' else "" }
+                                                                                        ${ if init != expected then ''failure ecfb2043 git-repository "We expected the init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "" }
                                                                                     '' ;
                                                                     }
                                                             )
