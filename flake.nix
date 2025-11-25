@@ -174,7 +174,7 @@
                                                                                     # shellcheck disable=SC2034
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${root-name }" = set ; } ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ root-name }" = set ; } ) ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
