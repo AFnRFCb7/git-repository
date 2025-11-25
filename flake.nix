@@ -175,6 +175,7 @@
                                                                                     STANDARD_INPUT="$( cat )" || failure 1098ed4e
                                                                                 fi
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ root-name }" = set ; } ) ) }
+                                                                                ln --symbolic "$0" /mount/stage/root
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
