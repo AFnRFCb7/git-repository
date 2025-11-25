@@ -99,12 +99,6 @@
                                                                                             submodules ? { }
                                                                                         } :
                                                                                             let
-                                                                                                xxx =
-                                                                                                    ''
-
-
-                                                                                                        ${ visitor visitors.setup post-setup }
-                                                                                                    '' ;
                                                                                                 sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ name module-name ] ; value = value ; } ) submodules ) ) ;
                                                                                                 in
                                                                                                     ''
@@ -117,7 +111,7 @@
                                                                                                         git submodule init 2>&1
                                                                                                         git submodule update --init --checkout 2>&1
                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) }
-
+                                                                                                        ${ visitor visitors.setup post-setup }
                                                                                                     '' ;
                                                                         ssh-command =
                                                                             {
