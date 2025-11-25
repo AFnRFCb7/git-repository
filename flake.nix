@@ -106,18 +106,23 @@
                                                                                                         {
                                                                                                             template =
                                                                                                                 { configs , defaults , hooks , module-name , post-setup , pre-setup , remotes , submodules } :
-                                                                                                                    ''
-                                                                                                                        cd "${ module-name }"
-                                                                                                                        ${ defaults }
-                                                                                                                        ${ configs }
-                                                                                                                        ${ hooks }
-                                                                                                                        ${ remotes }
-                                                                                                                        ${ pre-setup }
-                                                                                                                        git submodule init 2>&1
-                                                                                                                        git submodule update --init --checkout 2>&1
-                                                                                                                        ${ submodules }
-                                                                                                                        ${ post-setup }
-                                                                                                                    '' ;
+                                                                                                                    let
+                                                                                                                        xxx =
+                                                                                                                            ''
+                                                                                                                                cd "${ module-name }"
+                                                                                                                                ${ defaults }
+                                                                                                                                ${ configs }
+                                                                                                                                ${ hooks }
+                                                                                                                                ${ remotes }
+                                                                                                                                ${ pre-setup }
+                                                                                                                                git submodule init 2>&1
+                                                                                                                                git submodule update --init --checkout 2>&1
+                                                                                                                                ${ submodules }
+                                                                                                                                ${ post-setup }
+                                                                                                                            '' ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                            '' ;
                                                                                                             values =
                                                                                                                 {
                                                                                                                     configs = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) ;
