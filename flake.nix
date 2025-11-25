@@ -194,14 +194,14 @@
                                                                                     implementation
                                                                                         {
                                                                                             configs = configs ;
-                                                                                            email = email ;
+                                                                                            # email = email ;
                                                                                             hooks = hooks ;
-                                                                                            name = name ;
+                                                                                            # name = name ;
                                                                                             post-setup = post-setup ;
                                                                                             pre-setup = pre-setup ;
                                                                                             remotes = remotes ;
-                                                                                            ssh = ssh ;
-                                                                                            submodules = submodules ;
+                                                                                            # ssh = ssh ;
+                                                                                            # submodules = submodules ;
                                                                                         } ;
                                                                                 in
                                                                                     ''
