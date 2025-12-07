@@ -37,6 +37,7 @@
                                                                             let
                                                                                 defaults =
                                                                                     {
+                                                                                        follow-parent = follow-parent ;
                                                                                         email = email ;
                                                                                         name = name ;
                                                                                         ssh = ssh ;
@@ -92,6 +93,7 @@
                                                                                         {
                                                                                             configs ? { } ,
                                                                                             email ? defaults.email ,
+                                                                                            follow-parent ? defaults.follow-parent ,
                                                                                             hooks ? { } ,
                                                                                             name ? defaults.name ,
                                                                                             pre-setup ? null ,
