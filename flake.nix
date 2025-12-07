@@ -1,3 +1,4 @@
+
 {
     inputs = { } ;
     outputs =
@@ -13,6 +14,7 @@
                                 {
                                     configs ? { } ,
                                     email ? null ,
+                                    follow-parent ? false ,
                                     hooks ? { } ,
                                     name ? null ,
                                     post-setup ? null ,
@@ -36,6 +38,7 @@
                                                                             let
                                                                                 defaults =
                                                                                     {
+                                                                                        follow-parent = follow-parent ;
                                                                                         email = email ;
                                                                                         name = name ;
                                                                                         ssh = ssh ;
@@ -91,6 +94,7 @@
                                                                                         {
                                                                                             configs ? { } ,
                                                                                             email ? defaults.email ,
+                                                                                            follow-parent ? defaults.follow-parent ,
                                                                                             hooks ? { } ,
                                                                                             name ? defaults.name ,
                                                                                             pre-setup ? null ,
@@ -178,6 +182,7 @@
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
+                                        follow-parent = follow-parent ;
                                         targets = [ "repository" "stage" ] ;
                                     } ;
                             in
@@ -188,6 +193,7 @@
                                             email ? null ,
                                             expected ,
                                             failure ,
+                                            follow-parent ? false ,
                                             hooks ? { } ,
                                             mount ? null ,
                                             name ? null ,
@@ -218,6 +224,7 @@
                                                                                         {
                                                                                             configs = configs ;
                                                                                             email = email ;
+                                                                                            follow-parent = follow-parent ;
                                                                                             hooks = hooks ;
                                                                                             name = name ;
                                                                                             post-setup = post-setup ;
@@ -230,7 +237,7 @@
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         touch "$OUT"
-                                                                                        ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 git-repository "We expected the names to be init targets but we observed ${ builtins.toJSON builtins.attrNames instance }"'' else "#" }
+                                                                                        ${ if [ "follow-parent" "init" "targets" ] != builtins.attrNames instance then ''failure fd429b57 git-repository "We expected the names to be init targets but we observed ${ builtins.toJSON ( builtins.attrNames instance ) }"'' else "#" }
                                                                                         ${ if [ "repository" "stage" ] != instance.targets then ''failure 5c205b3b git-repository "We expected the targets to be repository stage but we observed "${ builtins.toJSON instance.targets }"'' else "#" }
                                                                                         ${ if init != expected then ''failure ecfb2043 git-repository "We expected the init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "" }
                                                                                     '' ;
