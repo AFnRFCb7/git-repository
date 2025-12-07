@@ -13,6 +13,7 @@
                                 {
                                     configs ? { } ,
                                     email ? null ,
+                                    follow-parent ? false ,
                                     hooks ? { } ,
                                     name ? null ,
                                     post-setup ? null ,
@@ -178,6 +179,7 @@
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
+                                        follow-parent = follow-parent ;
                                         targets = [ "repository" "stage" ] ;
                                     } ;
                             in
@@ -188,6 +190,7 @@
                                             email ? null ,
                                             expected ,
                                             failure ,
+                                            follow-parent ? false ,
                                             hooks ? { } ,
                                             mount ? null ,
                                             name ? null ,
@@ -218,6 +221,7 @@
                                                                                         {
                                                                                             configs = configs ;
                                                                                             email = email ;
+                                                                                            follow-parent = follow-parent ;
                                                                                             hooks = hooks ;
                                                                                             name = name ;
                                                                                             post-setup = post-setup ;
