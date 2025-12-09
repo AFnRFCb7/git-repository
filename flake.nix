@@ -100,6 +100,7 @@
                                                                                             name ? defaults.name ,
                                                                                             pre-setup ? null ,
                                                                                             post-setup ? null ,
+                                                                                            resolutions ? [ ] ,
                                                                                             remotes ? { } ,
                                                                                             ssh ? defaults.ssh ,
                                                                                             submodules ? { }
