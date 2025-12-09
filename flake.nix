@@ -20,6 +20,7 @@
                                     post-setup ? null ,
                                     pre-setup ? null ,
                                     remotes ? { } ,
+                                    resolutions ? { } ,
                                     ssh ? null ,
                                     submodules ? { }
                                 } @set :
@@ -183,6 +184,14 @@
                                                             } ;
                                                     in "${ application }/bin/init" ;
                                         follow-parent = follow-parent ;
+                                        seed =
+                                            {
+                                                resolutions =
+                                                    {
+                                                        init = resolutions ;
+                                                        release = resolutions ;
+                                                    } ;
+                                            } ;
                                         targets = [ "repository" "stage" ] ;
                                     } ;
                             in
@@ -200,6 +209,7 @@
                                             pkgs ,
                                             post-setup ? null ,
                                             pre-setup ? null ,
+                                            resolutions ? [ ] ,
                                             remotes ? { } ,
                                             resources ? null ,
                                             ssh ? null ,
@@ -230,6 +240,7 @@
                                                                                             post-setup = post-setup ;
                                                                                             pre-setup = pre-setup ;
                                                                                             remotes = remotes ;
+                                                                                            resolutions = resolutions ;
                                                                                             ssh = ssh ;
                                                                                             submodules = submodules ;
                                                                                         } ;
