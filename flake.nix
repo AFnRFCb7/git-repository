@@ -214,7 +214,8 @@
                                             remotes ? { } ,
                                             resources ? null ,
                                             ssh ? null ,
-                                            submodules ? { }
+                                            submodules ? { } ,
+                                            wrap ? "63270f12"
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
