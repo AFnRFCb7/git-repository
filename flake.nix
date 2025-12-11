@@ -26,7 +26,7 @@
                                 } @set :
                                     {
                                         init =
-                                            { mount , pkgs , resources , wrap } @primary :
+                                            { mount , pkgs , resources , root , wrap } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -213,6 +213,7 @@
                                             resolutions ? [ ] ,
                                             remotes ? { } ,
                                             resources ? null ,
+                                            root ? "801e9b6b" ,
                                             ssh ? null ,
                                             submodules ? { } ,
                                             wrap ? "63270f12"
@@ -230,7 +231,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; wrap = wrap ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ;
                                                                                 instance =
                                                                                     implementation
                                                                                         {
