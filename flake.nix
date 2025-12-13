@@ -125,7 +125,9 @@
                                                                                                                             ${ if builtins.typeOf email == "string" then ''git config user.name "${ email }"'' else "#" }
                                                                                                                             ${ if builtins.typeOf name == "string" then ''git config user.name "${ name }"'' else "#" }
                                                                                                                         '
+                                                                                                                        echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
+                                                                                                                        echo 01f220e4
                                                                                                                         ${ submodules }
                                                                                                                         ${ post-setup }
                                                                                                                     '' ;
