@@ -174,8 +174,8 @@
                                                                                         path : value :
                                                                                             ''
                                                                                                 # shellcheck disable=SC2034
-                                                                                                GIT_SSH_COMMAND=${ value }
-                                                                                                export GIT_SSH_COMMAND
+                                                                                                ${ thing }="${ value }"
+                                                                                                export ${ thing }
                                                                                             '' ;
                                                                                 } ;
                                                                         in
