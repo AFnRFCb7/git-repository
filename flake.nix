@@ -120,12 +120,12 @@
                                                                                                                         ${ pre-setup }
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
-                                                                                                                        git submodule update --init --checkout 2>&1
                                                                                                                         git submodule foreach '
                                                                                                                             ${ if builtins.typeOf ssh == "string" then ''git config core.sshCommand "${ ssh }"'' else "#" }
                                                                                                                             ${ if builtins.typeOf email == "string" then ''git config user.name "${ email }"'' else "#" }
                                                                                                                             ${ if builtins.typeOf name == "string" then ''git config user.name "${ name }"'' else "#" }
                                                                                                                         '
+                                                                                                                        git submodule update --init --checkout 2>&1
                                                                                                                         ${ submodules }
                                                                                                                         ${ post-setup }
                                                                                                                     '' ;
