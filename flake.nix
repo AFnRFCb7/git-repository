@@ -121,9 +121,18 @@
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         git submodule foreach '
-                                                                                                                            ${ if builtins.typeOf ssh == "string" then ''git config core.sshCommand "${ ssh }"'' else "#" }
-                                                                                                                            ${ if builtins.typeOf email == "string" then ''git config user.name "${ email }"'' else "#" }
-                                                                                                                            ${ if builtins.typeOf name == "string" then ''git config user.name "${ name }"'' else "#" }
+                                                                                                                            if [[ -n "$GIT_SSH_COMMAND" ]]
+                                                                                                                            then
+                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                            fi
+                                                                                                                            if [[ -n "$EMAIL" ]]
+                                                                                                                            then
+                                                                                                                                git config core.user.email "$EMAIL"
+                                                                                                                            fi
+                                                                                                                            if [[ -n "$NAME" ]]
+                                                                                                                            then
+                                                                                                                                git config core.user.name "$NAME"
+                                                                                                                            fi
                                                                                                                         '
                                                                                                                         echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
@@ -145,35 +154,38 @@
                                                                                                         } ;
                                                                         root-name = string { template = { mount } : "${ mount }/repository" ; values = { mount = mount ; } ; } ;
                                                                         ssh-command =
-                                                                            {
-                                                                                lambda =
-                                                                                    path : value :
-                                                                                        string
-                                                                                            {
-                                                                                                template =
-                                                                                                    { mount } :
-                                                                                                        ''
-                                                                                                           # shellcheck disable=SC2034
-                                                                                                           GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
-                                                                                                           export GIT_SSH_COMMMAND
-                                                                                                        '' ;
-                                                                                                values = { mount = mount ; } ;
-                                                                                            } ;
-                                                                                null = path : value : "#" ;
-                                                                                string =
-                                                                                    path : value :
-                                                                                        ''
-                                                                                            # shellcheck disable=SC2034
-                                                                                            GIT_SSH_COMMAND=${ value }
-                                                                                            export GIT_SSH_COMMAND
-                                                                                        '' ;
-                                                                            } ;
+                                                                            thing :
+                                                                                {
+                                                                                    lambda =
+                                                                                        path : value :
+                                                                                            string
+                                                                                                {
+                                                                                                    template =
+                                                                                                        { mount } :
+                                                                                                            ''
+                                                                                                               # shellcheck disable=SC2034
+                                                                                                               GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
+                                                                                                               export GIT_SSH_COMMMAND
+                                                                                                            '' ;
+                                                                                                    values = { mount = mount ; } ;
+                                                                                                } ;
+                                                                                    null = path : value : "#" ;
+                                                                                    string =
+                                                                                        path : value :
+                                                                                            ''
+                                                                                                # shellcheck disable=SC2034
+                                                                                                GIT_SSH_COMMAND=${ value }
+                                                                                                export GIT_SSH_COMMAND
+                                                                                            '' ;
+                                                                                } ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ visitor ssh-command ssh }
+                                                                                ${ visitor ( ssh-command "GIT_SSH_COMMAND" ) ssh }
+                                                                                ${ visitor ( ssh-command "EMAIL" ) email }
+                                                                                ${ visitor ( ssh-command "NAME" ) name }
                                                                                 mkdir --parents /mount/stage
                                                                                 if [[ -t 0 ]]
                                                                                 then
