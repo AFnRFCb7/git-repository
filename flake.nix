@@ -120,20 +120,20 @@
                                                                                                                         ${ pre-setup }
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
-                                                                                                                        git submodule foreach '
-                                                                                                                            if [[ -n "$GIT_SSH_COMMAND" ]]
+                                                                                                                        git submodule foreach "
+                                                                                                                            if [[ -n \"$GIT_SSH_COMMAND\" ]]
                                                                                                                             then
-                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                git config core.sshCommand \"$GIT_SSH_COMMAND\"
                                                                                                                             fi
-                                                                                                                            if [[ -n "$EMAIL" ]]
+                                                                                                                            if [[ -n \"$EMAIL\" ]]
                                                                                                                             then
-                                                                                                                                git config core.user.email "$EMAIL"
+                                                                                                                                git config core.user.email \"$EMAIL\"
                                                                                                                             fi
-                                                                                                                            if [[ -n "$NAME" ]]
+                                                                                                                            if [[ -n \"$NAME\" ]]
                                                                                                                             then
-                                                                                                                                git config core.user.name "$NAME"
+                                                                                                                                git config core.user.name \"$NAME\"
                                                                                                                             fi
-                                                                                                                        '
+                                                                                                                        "
                                                                                                                         echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
                                                                                                                         echo 01f220e4
