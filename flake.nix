@@ -118,7 +118,7 @@
                                                                                                                         ${ hooks }
                                                                                                                         ${ remotes }
                                                                                                                         ${ pre-setup }
-                                                                                                                        ${ if builtins.typeOf ssh == "string" then ''export GIT_SSH_COMMAND=${ ssh }'' else "#" }
+                                                                                                                        echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         git submodule update --init --checkout 2>&1
                                                                                                                         git submodule foreach '
