@@ -120,6 +120,11 @@
                                                                                                                         ${ pre-setup }
                                                                                                                         git submodule init 2>&1
                                                                                                                         git submodule update --init --checkout 2>&1
+                                                                                                                        git submodule foreach '
+                                                                                                                            ${ if builtins.typeOf name == "string" then ''git config core.sshCommand "${ ssh }"'' else "#" }
+                                                                                                                            ${ if builtins.typeOf email == "string" then ''git config user.name "${ email }"'' else "#" }
+                                                                                                                            ${ if builtins.typeOf name == "string" then ''git config user.name "${ name }"'' else "#" }
+                                                                                                                        '
                                                                                                                         ${ submodules }
                                                                                                                         ${ post-setup }
                                                                                                                     '' ;
