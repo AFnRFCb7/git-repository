@@ -129,10 +129,10 @@
                                                                                                                             then
                                                                                                                                 git config core.user.email \"$EMAIL\"
                                                                                                                             fi
-                                                                                                                            if [[ -n \"$NAME\" ]]
-                                                                                                                            then
-                                                                                                                                git config core.user.name \"$NAME\"
-                                                                                                                            fi
+                                                                                                                            # if [[ -n \"$NAME\" ]]
+                                                                                                                            # then
+                                                                                                                            #     git config core.user.name \"$NAME\"
+                                                                                                                            # fi
                                                                                                                         "
                                                                                                                         echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
