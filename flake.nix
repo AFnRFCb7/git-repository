@@ -129,10 +129,10 @@
                                                                                                                             then
                                                                                                                                 git config core.user.email \"$EMAIL\"
                                                                                                                             fi
-                                                                                                                            # if [[ -n \"$NAME\" ]]
-                                                                                                                            # then
-                                                                                                                            #     git config core.user.name \"$NAME\"
-                                                                                                                            # fi
+                                                                                                                            if [[ -n \"$NAME\" ]]
+                                                                                                                            then
+                                                                                                                                git config core.user.name \"$NAME\"
+                                                                                                                            fi
                                                                                                                         "
                                                                                                                         echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
@@ -164,8 +164,8 @@
                                                                                                         { mount } :
                                                                                                             ''
                                                                                                                # shellcheck disable=SC2034
-                                                                                                               GIT_SSH_COMMAND="${ value "${ mount }/stage" }"
-                                                                                                               export GIT_SSH_COMMMAND
+                                                                                                               ${ thing }="${ value "${ mount }/stage" }"
+                                                                                                               export ${ thing }
                                                                                                             '' ;
                                                                                                     values = { mount = mount ; } ;
                                                                                                 } ;
