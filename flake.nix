@@ -121,8 +121,10 @@
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         git submodule foreach "
+                                                                                                                            echo bc479fa8
                                                                                                                             if [[ -n \"$GIT_SSH_COMMAND\" ]]
                                                                                                                             then
+                                                                                                                                echo 2d1ea410
                                                                                                                                 git config core.sshCommand \"$GIT_SSH_COMMAND\"
                                                                                                                             fi
                                                                                                                             if [[ -n \"$EMAIL\" ]]
