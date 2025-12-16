@@ -121,6 +121,8 @@
                                                                                                                         echo a13c3a81 "$0" "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         echo 52e65f9b
+                                                                                                                        echo 8b08103c
+                                                                                                                        git submodule update --init --checkout 2>&1
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         git submodule foreach '
                                                                                                                             echo bc479fa8
@@ -138,8 +140,6 @@
                                                                                                                                 git config core.user.name "$NAME"
                                                                                                                             fi
                                                                                                                         '
-                                                                                                                        echo 8b08103c
-                                                                                                                        git submodule update --init --checkout 2>&1
                                                                                                                         echo 01f220e4
                                                                                                                         ${ submodules }
                                                                                                                         ${ post-setup }
