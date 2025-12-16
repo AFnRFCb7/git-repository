@@ -121,6 +121,7 @@
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         echo 52e65f9b
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         git submodule foreach '
                                                                                                                             echo bc479fa8
                                                                                                                             if [ -n "$GIT_SSH_COMMAND" ]
