@@ -121,22 +121,22 @@
                                                                                                                         echo a13c3a81 "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
                                                                                                                         git submodule init 2>&1
                                                                                                                         echo 52e65f9b
-                                                                                                                        git submodule foreach "
+                                                                                                                        git submodule foreach '
                                                                                                                             echo bc479fa8
-                                                                                                                            if [ -n \"$GIT_SSH_COMMAND\" ]
+                                                                                                                            if [ -n "$GIT_SSH_COMMAND" ]
                                                                                                                             then
                                                                                                                                 echo 2d1ea410
                                                                                                                                 git config core.sshCommand \"$GIT_SSH_COMMAND\"
                                                                                                                             fi
-                                                                                                                            if [ -n \"$EMAIL\" ]
+                                                                                                                            if [ -n "$EMAIL" ]
                                                                                                                             then
                                                                                                                                 git config core.user.email \"$EMAIL\"
                                                                                                                             fi
-                                                                                                                            if [ -n \"$NAME\" ]
+                                                                                                                            if [ -n "$NAME" ]
                                                                                                                             then
                                                                                                                                 git config core.user.name \"$NAME\"
                                                                                                                             fi
-                                                                                                                        "
+                                                                                                                        '
                                                                                                                         echo 8b08103c
                                                                                                                         git submodule update --init --checkout 2>&1
                                                                                                                         echo 01f220e4
