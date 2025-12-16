@@ -126,15 +126,15 @@
                                                                                                                             if [ -n "$GIT_SSH_COMMAND" ]
                                                                                                                             then
                                                                                                                                 echo 2d1ea410
-                                                                                                                                git config core.sshCommand \"$GIT_SSH_COMMAND\"
+                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                             fi
                                                                                                                             if [ -n "$EMAIL" ]
                                                                                                                             then
-                                                                                                                                git config core.user.email \"$EMAIL\"
+                                                                                                                                git config core.user.email "$EMAIL"
                                                                                                                             fi
                                                                                                                             if [ -n "$NAME" ]
                                                                                                                             then
-                                                                                                                                git config core.user.name \"$NAME\"
+                                                                                                                                git config core.user.name "$NAME"
                                                                                                                             fi
                                                                                                                         '
                                                                                                                         echo 8b08103c
