@@ -133,11 +133,11 @@
                                                                                                                             fi
                                                                                                                             if [ -n "$EMAIL" ]
                                                                                                                             then
-                                                                                                                                git config core.user.email "$EMAIL"
+                                                                                                                                git config user.email "$EMAIL"
                                                                                                                             fi
                                                                                                                             if [ -n "$NAME" ]
                                                                                                                             then
-                                                                                                                                git config core.user.name "$NAME"
+                                                                                                                                git config user.name "$NAME"
                                                                                                                             fi
                                                                                                                         '
                                                                                                                         echo 01f220e4
