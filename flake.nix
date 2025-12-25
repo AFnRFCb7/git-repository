@@ -53,7 +53,9 @@
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 mkdir --parents /mount/stage
+                                                                                echo b9a6289b >&2
                                                                                 cd /mount/repository
+                                                                                echo cee02402 >&2
                                                                                 git init 2>&1
                                                                                 ${ builtins.concatStringsSep "\n" ( visitor visitors.setup setup ) }
                                                                             '' ;
