@@ -81,7 +81,7 @@
                                             resolutions ? "791d986b" ,
                                             resources ?  "5d81ce2a" ,
                                             root ? "801e9b6b" ,
-                                            setup ? 5b20c075 ,
+                                            setup ? "5b20c075" ,
                                             wrap ? "63270f12"
                                         } :
                                             pkgs.stdenv.mkDerivation
