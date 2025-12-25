@@ -46,7 +46,7 @@
                                                                                                 list = path : list : builtins.concatLists list ;
                                                                                                 null = path : value : [ ] ;
                                                                                                 set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                                string = path : value : string value ;
+                                                                                                string = path : value : [ ( string value ) ] ;
                                                                                             } ;
                                                                             } ;
                                                                         in
