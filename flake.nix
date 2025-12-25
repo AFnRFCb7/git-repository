@@ -12,8 +12,8 @@
                             implementation =
                                 {
                                     follow-parent ,
-                                    resolutions ? { } ,
-                                    setup ? null
+                                    resolutions ,
+                                    setup
                                 } @set :
                                     {
                                         init =
