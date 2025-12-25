@@ -52,6 +52,7 @@
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
+                                                                                mkdir --parents /mount/stage
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
                                                                                 ${ builtins.concatStringsSep "\n" ( visitor visitors.setup setup ) }
