@@ -11,17 +11,9 @@
                         let
                             implementation =
                                 {
-                                    configs ? { } ,
-                                    email ? null ,
-                                    follow-parent ? false ,
-                                    hooks ? { } ,
-                                    name ? null ,
-                                    post-setup ? null ,
-                                    pre-setup ? null ,
-                                    remotes ? { } ,
+                                    follow-parent ,
                                     resolutions ? { } ,
-                                    ssh ? null ,
-                                    submodules ? { }
+                                    setup ? null
                                 } @set :
                                     {
                                         init =
@@ -34,176 +26,35 @@
                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                 text =
                                                                     let
-                                                                        mapper =
-                                                                            let
-                                                                                defaults =
-                                                                                    {
-                                                                                        follow-parent = follow-parent ;
-                                                                                        email = email ;
-                                                                                        name = name ;
-                                                                                        ssh = ssh ;
-                                                                                    } ;
-                                                                                visitors =
+                                                                        visitors =
+                                                                            {
+                                                                                setup =
                                                                                     let
-                                                                                        stage = string { template = { mount } : "${ mount }/stage" ; values = { mount = mount ; } ; } ;
+                                                                                        string =
+                                                                                            string :
+                                                                                                ''
+                                                                                                    if [[ -t 0 ]]
+                                                                                                    then
+                                                                                                        ${ string } "$@"
+                                                                                                    else
+                                                                                                        cat | ${ string } "$@"
+                                                                                                    fi
+                                                                                                '' ;
                                                                                         in
                                                                                             {
-                                                                                                configs =
-                                                                                                    {
-                                                                                                        bool = path : value : ''git config ${ builtins.elemAt path 0} ${ if value == true then "true" else "false" }'' ;
-                                                                                                        int = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                        float = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                        lambda = path : value : ''git config ${ builtins.elemAt path 0 } "${ value stage }"'' ;
-                                                                                                        null = path : value : ''#'' ;
-                                                                                                        path = path : value : ''git config ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                        string = path : value : ''git config ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                                    } ;
-                                                                                                hooks =
-                                                                                                    {
-                                                                                                        lambda = path : value : ''ln --symbolic "${ value stage }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                                        path = path : value : ''ln --symbolic ${ builtins.toString value } .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                                        string = path : value : ''ln --symbolic "${ value }" .git/hooks/${ builtins.elemAt path 0 }'' ;
-                                                                                                    } ;
-                                                                                                remotes =
-                                                                                                    {
-                                                                                                        lambda = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value stage }"'' ;
-                                                                                                        path = path : value : ''git remote add ${ builtins.elemAt path 0 } ${ builtins.toString value }'' ;
-                                                                                                        string = path : value : ''git remote add ${ builtins.elemAt path 0 } "${ value }"'' ;
-                                                                                                    } ;
-                                                                                                setup =
-                                                                                                    let
-                                                                                                        string =
-                                                                                                            string :
-                                                                                                                ''
-                                                                                                                    if "$HAS_STANDARD_INPUT"
-                                                                                                                    then
-                                                                                                                        ${ string } "$@"
-                                                                                                                    else
-                                                                                                                        echo "$STANDARD_INPUT" | ${ string } "$@"
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        in
-                                                                                                            {
-                                                                                                                lambda = path : value : string ( value primary ) ;
-                                                                                                                null = path : value : "#" ;
-                                                                                                                string = path : value : string value ;
-                                                                                                            } ;
+                                                                                                lambda = path : value : [ ( string ( value primary ) ) ] ;
+                                                                                                list = path : list : builtins.concatLists list ;
+                                                                                                null = path : value : [ ] ;
+                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                string = path : value : string value ;
                                                                                             } ;
-                                                                                in
-                                                                                    module-name :
-                                                                                        {
-                                                                                            configs ? { } ,
-                                                                                            email ? defaults.email ,
-                                                                                            follow-parent ? defaults.follow-parent ,
-                                                                                            hooks ? { } ,
-                                                                                            name ? defaults.name ,
-                                                                                            pre-setup ? null ,
-                                                                                            post-setup ? null ,
-                                                                                            resolutions ? [ ] ,
-                                                                                            remotes ? { } ,
-                                                                                            ssh ? defaults.ssh ,
-                                                                                            submodules ? { }
-                                                                                        } :
-                                                                                            let
-                                                                                                sub = builtins.listToAttrs ( builtins.attrValues ( builtins.mapAttrs ( name : value : { name = builtins.concatStringsSep "/" [ module-name name ] ; value = value ; } ) submodules ) ) ;
-                                                                                                in
-                                                                                                    string
-                                                                                                        {
-                                                                                                            template =
-                                                                                                                { configs , defaults , hooks , module-name , post-setup , pre-setup , remotes , submodules } :
-                                                                                                                    ''
-                                                                                                                        cd "${ module-name }"
-                                                                                                                        ${ defaults }
-                                                                                                                        ${ configs }
-                                                                                                                        ${ hooks }
-                                                                                                                        ${ remotes }
-                                                                                                                        ${ pre-setup }
-                                                                                                                        echo a13c3a81 "$0" "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
-                                                                                                                        git submodule init 2>&1
-                                                                                                                        echo 52e65f9b
-                                                                                                                        echo 8b08103c
-                                                                                                                        git submodule update --init --checkout 2>&1
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        git submodule foreach '
-                                                                                                                            echo bc479fa8
-                                                                                                                            if [ -n "$GIT_SSH_COMMAND" ]
-                                                                                                                            then
-                                                                                                                                echo 2d1ea410
-                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                            fi
-                                                                                                                            if [ -n "$EMAIL" ]
-                                                                                                                            then
-                                                                                                                                git config user.email "$EMAIL"
-                                                                                                                            fi
-                                                                                                                            if [ -n "$NAME" ]
-                                                                                                                            then
-                                                                                                                                git config user.name "$NAME"
-                                                                                                                            fi
-                                                                                                                        '
-                                                                                                                        echo 01f220e4
-                                                                                                                        ${ submodules }
-                                                                                                                        ${ post-setup }
-                                                                                                                    '' ;
-                                                                                                            values =
-                                                                                                                {
-                                                                                                                    configs = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs configs ) ) ;
-                                                                                                                    hooks = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.hooks hooks ) ) ;
-                                                                                                                    defaults = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.configs { "core.sshCommand" = ssh ; "user.email" = email ; "user.name" = name ; } ) ) ;
-                                                                                                                    module-name = module-name ;
-                                                                                                                    post-setup = visitor visitors.setup post-setup ;
-                                                                                                                    pre-setup = visitor visitors.setup pre-setup ;
-                                                                                                                    remotes = builtins.concatStringsSep "\n" ( builtins.attrValues ( visitor visitors.remotes remotes ) ) ;
-                                                                                                                    submodules = builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper sub ) ) ;
-                                                                                                                } ;
-                                                                                                        } ;
-                                                                        root-name = string { template = { mount } : "${ mount }/repository" ; values = { mount = mount ; } ; } ;
-                                                                        ssh-command =
-                                                                            thing :
-                                                                                {
-                                                                                    lambda =
-                                                                                        path : value :
-                                                                                            string
-                                                                                                {
-                                                                                                    template =
-                                                                                                        { mount } :
-                                                                                                            ''
-                                                                                                               # shellcheck disable=SC2034
-                                                                                                               ${ thing }="${ value "${ mount }/stage" }"
-                                                                                                               export ${ thing }
-                                                                                                            '' ;
-                                                                                                    values = { mount = mount ; } ;
-                                                                                                } ;
-                                                                                    null = path : value : "#" ;
-                                                                                    string =
-                                                                                        path : value :
-                                                                                            ''
-                                                                                                # shellcheck disable=SC2034
-                                                                                                ${ thing }="${ value }"
-                                                                                                export ${ thing }
-                                                                                            '' ;
-                                                                                } ;
+                                                                            } ;
                                                                         in
                                                                             ''
                                                                                 mkdir --parents /mount/repository
                                                                                 cd /mount/repository
                                                                                 git init 2>&1
-                                                                                ${ visitor ( ssh-command "GIT_SSH_COMMAND" ) ssh }
-                                                                                ${ visitor ( ssh-command "EMAIL" ) email }
-                                                                                ${ visitor ( ssh-command "NAME" ) name }
-                                                                                mkdir --parents /mount/stage
-                                                                                if [[ -t 0 ]]
-                                                                                then
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=false
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT=
-                                                                                else
-                                                                                    # shellcheck disable=SC2034
-                                                                                    HAS_STANDARD_INPUT=true
-                                                                                    # shellcheck disable=SC2034
-                                                                                    STANDARD_INPUT="$( cat )" || failure 1098ed4e
-                                                                                fi
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper { "${ root-name }" = set ; } ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( visitor visitors.setup setup ) }
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
@@ -222,23 +73,15 @@
                                 {
                                     check =
                                         {
-                                            configs ? { } ,
-                                            email ? null ,
                                             expected ,
                                             failure ,
-                                            follow-parent ? false ,
-                                            hooks ? { } ,
-                                            mount ? null ,
-                                            name ? null ,
-                                            pkgs ,
-                                            post-setup ? null ,
-                                            pre-setup ? null ,
-                                            resolutions ? [ ] ,
-                                            remotes ? { } ,
-                                            resources ? null ,
+                                            follow-parent ? "42647617" ,
+                                            mount ? "b72fccc4" ,
+                                            pkgs ? "5b31c1f7" ,
+                                            resolutions ? "791d986b" ,
+                                            resources ?  "5d81ce2a" ,
                                             root ? "801e9b6b" ,
-                                            ssh ? null ,
-                                            submodules ? { } ,
+                                            setup ? 5b20c075 ,
                                             wrap ? "63270f12"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -258,17 +101,9 @@
                                                                                 instance =
                                                                                     implementation
                                                                                         {
-                                                                                            configs = configs ;
-                                                                                            email = email ;
                                                                                             follow-parent = follow-parent ;
-                                                                                            hooks = hooks ;
-                                                                                            name = name ;
-                                                                                            post-setup = post-setup ;
-                                                                                            pre-setup = pre-setup ;
-                                                                                            remotes = remotes ;
                                                                                             resolutions = resolutions ;
-                                                                                            ssh = ssh ;
-                                                                                            submodules = submodules ;
+                                                                                            setup = setup ;
                                                                                         } ;
                                                                                 in
                                                                                     ''
