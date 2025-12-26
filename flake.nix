@@ -51,11 +51,17 @@
                                                                             } ;
                                                                         in
                                                                             ''
+                                                                                echo 970b3933 >&2
                                                                                 mkdir --parents /mount/repository
+                                                                                echo 267b6fe5 >&2
                                                                                 mkdir --parents /mount/stage
+                                                                                echo 3c3750fb >&2
                                                                                 cd /mount/repository
+                                                                                echo 9ce7865c >&2
                                                                                 git init 2>&1
+                                                                                echo d17ddd27 >&2
                                                                                 ${ builtins.concatStringsSep "\n" ( visitor visitors.setup setup ) }
+                                                                                echo bb0aa085 >&2
                                                                             '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
