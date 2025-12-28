@@ -51,13 +51,9 @@
                                                                             } ;
                                                                         in
                                                                             ''
-                                                                                echo 37d07eeb >&2
                                                                                 mkdir --parents /mount/repository
-                                                                                echo 5e0701f1 >&2
                                                                                 mkdir --parents /mount/stage
-                                                                                echo 06098ac6 >&2
                                                                                 cd /mount/repository
-                                                                                echo 6352e096 >&2
                                                                                 git init 2>&1
                                                                                 ${ builtins.concatStringsSep "\n" ( visitor visitors.setup setup ) }
                                                                             '' ;
