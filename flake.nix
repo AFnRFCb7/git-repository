@@ -17,7 +17,7 @@
                                 } @set :
                                     {
                                         init =
-                                            { mount , pkgs , resources , root , wrap } @primary :
+                                            { pid , pkgs , resources , root , sequential , wrap } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
