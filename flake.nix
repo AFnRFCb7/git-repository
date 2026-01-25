@@ -74,12 +74,13 @@
                                         {
                                             expected ,
                                             failure ,
-                                            mount ? "b72fccc4" ,
+                                            pid ? "7b0044bf" ,
                                             pkgs ? "5b31c1f7" ,
                                             resolutions ? "791d986b" ,
                                             resources ?  "5d81ce2a" ,
                                             root ? "801e9b6b" ,
                                             setup ? "5b20c075" ,
+                                            sequential ? "2702a2cf" ,
                                             wrap ? "63270f12"
                                         } :
                                             pkgs.stdenv.mkDerivation
